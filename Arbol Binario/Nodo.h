@@ -15,6 +15,7 @@ public:
 	void insertDer(Nodo<T>* der);
 	void insert(const T& dato);
 	T* getDato();
+	friend class Arbol;
 };
 
 template<class T>
