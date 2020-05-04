@@ -34,6 +34,8 @@ inline void Arbol<T>::insertar(const T& dato)
 template<class T>
 inline stack<T>* Arbol<T>::recorrerPreOrden()
 {
+	stack<T>* pila = new stack<T>();
+	
 	return NULL;
 }
 
