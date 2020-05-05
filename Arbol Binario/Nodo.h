@@ -8,6 +8,7 @@ private:
 	Nodo<T>* izq;
 	Nodo<T>* der;
 public:
+	friend class Arbol<T>;
 	Nodo<T>(const T& i);
 	Nodo<T>();
 	T* buscar(const T& i);

@@ -15,6 +15,7 @@ public:
 	void eliminar();
 private:
 	Nodo<T>* raiz;
+	static stack<T> InOrden(Nodo<T> *nodo);
 };
 
 template<class T>
@@ -35,14 +36,20 @@ template<class T>
 inline stack<T>* Arbol<T>::recorrerPreOrden()
 {
 	stack<T>* pila = new stack<T>();
-	
 	return NULL;
 }
 
 template<class T>
 inline stack<T>* Arbol<T>::recorrerInOrden()
 {
-	return NULL;
+	stack<T>* retorno = new stack<T>;
+	if (this->raiz != nullptr) {
+
+	}
+	else {
+		return NULL;
+	}
+	
 }
 
 template<class T>
@@ -55,3 +62,17 @@ template<class T>
 inline void Arbol<T>::eliminar()
 {
 }
+
+template<class T>
+inline stack<T> Arbol<T>::InOrden(Nodo<T>* nodo)
+{
+	stack<T>* devolver = new stack<T>();
+	if (nodo != nullptr) {
+		devolver = Arbol<T>::InOrden(nodo->izq) + devolver;
+		devolver->push(nodo->dato);
+		devolver = Arbol<T>::InOrden(nodo->der) + devolver;
+	}
+	return *devolver;
+}
+
+

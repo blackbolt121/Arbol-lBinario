@@ -97,13 +97,28 @@ bool stack<T>::isEmpty() {
 	}
 }
 template <class T>
-stack<T> stack<T>::operator+(stack<T> &b) {
-	stack<T> aux;
-	while (!b.isEmpty()) {
-		aux.push(*b.pop()->getItem());
+stack<T> stack<T>::operator+(stack<T>& b) {
+	if (this->isEmpty()) {
+		if (!b.isEmpty()) {
+			return b;
+		}
+		else {
+			return stack<T>();
+		}
 	}
-	while (!aux.isEmpty()) {
-		this->push(*aux.pop()->getItem());
+	else {
+		if (b->isEmpty()) {
+			return *this;
+		}
+		else {
+			stack<T> aux;
+			while (!b.isEmpty()) {
+				aux.push(*b.pop()->getItem());
+			}
+			while (!aux.isEmpty()) {
+				this->push(*aux.pop()->getItem());
+			}
+		}
 	}
 	return *this;
 }
