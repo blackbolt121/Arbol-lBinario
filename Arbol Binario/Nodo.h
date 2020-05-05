@@ -8,13 +8,14 @@ private:
 	Nodo<T>* izq;
 	Nodo<T>* der;
 public:
-	friend class Arbol<T>;
 	Nodo<T>(const T& i);
 	Nodo<T>();
 	T* buscar(const T& i);
 	void insertIzq(Nodo<T>* izq);
 	void insertDer(Nodo<T>* der);
 	void insert(const T& dato);
+	Nodo<T>* getIzq();
+	Nodo<T>* getDer();
 	T* getDato();
 };
 
@@ -97,6 +98,18 @@ inline void Nodo<T>::insert(const T& dato)
 		*this->dato = dato;
 	}
 	
+}
+
+template<class T>
+inline Nodo<T>* Nodo<T>::getIzq()
+{
+	return this->izq;
+}
+
+template<class T>
+inline Nodo<T>* Nodo<T>::getDer()
+{
+	return this->der;
 }
 
 template<class T>

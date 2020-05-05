@@ -78,7 +78,8 @@ template <class T>
 frame<T>* stack<T>::get(T i) {
 	frame<T>* aux;
 	aux = this->item;
-	if (aux == NULL) return NULL;
+	if (aux == NULL) 
+		return NULL;
 	while (aux != NULL) {
 		if (*aux->getItem() == i) break;
 		else {
@@ -107,7 +108,7 @@ stack<T> stack<T>::operator+(stack<T>& b) {
 		}
 	}
 	else {
-		if (b->isEmpty()) {
+		if (b.isEmpty()) {
 			return *this;
 		}
 		else {

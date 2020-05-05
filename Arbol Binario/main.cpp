@@ -9,7 +9,22 @@
 
 int main()
 {
-
+    Arbol<int> arbol;
+    arbol.insertar(2);
+    arbol.insertar(3);
+    arbol.insertar(1);
+    arbol.insertar(5);
+    arbol.insertar(4);
+    arbol.insertar(8);
+    stack<int> imprimir = arbol.recorrerInOrden();
+    if (imprimir.isEmpty()) {
+        std::cout << "La pila esta vacia";
+    }
+    else {
+        while (!imprimir.isEmpty()) {
+            std::cout << *imprimir.pop()->getItem() << std::endl;
+        }
+    }
 }
 
 // Ejecutar programa: Ctrl + F5 o menú Depurar > Iniciar sin depurar
