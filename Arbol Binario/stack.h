@@ -14,6 +14,7 @@ public:
 	bool isEmpty();
 	frame<T>* pop();
 	frame<T>* get(T i);
+	stack<T> operator+(stack<T> &b);
 
 private:
 	frame<T>* item;
@@ -77,7 +78,8 @@ template <class T>
 frame<T>* stack<T>::get(T i) {
 	frame<T>* aux;
 	aux = this->item;
-	if (aux == NULL) return NULL;
+	if (aux == NULL) 
+		return NULL;
 	while (aux != NULL) {
 		if (*aux->getItem() == i) break;
 		else {
@@ -94,4 +96,30 @@ bool stack<T>::isEmpty() {
 	else {
 		return false;
 	}
+}
+template <class T>
+stack<T> stack<T>::operator+(stack<T>& b) {
+	if (this->isEmpty()) {
+		if (!b.isEmpty()) {
+			return b;
+		}
+		else {
+			return stack<T>();
+		}
+	}
+	else {
+		if (b.isEmpty()) {
+			return *this;
+		}
+		else {
+			stack<T> aux;
+			while (!b.isEmpty()) {
+				aux.push(*b.pop()->getItem());
+			}
+			while (!aux.isEmpty()) {
+				this->push(*aux.pop()->getItem());
+			}
+		}
+	}
+	return *this;
 }
