@@ -15,6 +15,7 @@ public:
 	frame<T>* pop();
 	frame<T>* get(T i);
 	stack<T> operator+(stack<T> &b);
+	stack<T> reverse();
 
 private:
 	frame<T>* item;
@@ -122,4 +123,16 @@ stack<T> stack<T>::operator+(stack<T>& b) {
 		}
 	}
 	return *this;
+}
+
+template<class T>
+inline stack<T> stack<T>::reverse()
+{
+	stack<T> aux;
+	frame<T> *aux2 = this->getPeek();
+	while (aux2 != nullptr) {
+		aux.push(*aux2->getItem());
+		aux2 = aux2->getNext();
+	}
+	return aux;
 }

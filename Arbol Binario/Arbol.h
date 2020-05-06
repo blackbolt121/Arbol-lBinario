@@ -15,7 +15,9 @@ public:
 	void eliminar();
 private:
 	Nodo<T>* raiz;
-	static stack<T> InOrden(Nodo<T> *nodo);
+	static stack<T> InOrden(Nodo<T> *nodo, stack<T>& entrada);
+	static stack<T> PreOrden(Nodo<T>* nodo, stack<T>& entrada);
+	static stack<T> PostOrden(Nodo<T>* nodo, stack<T>& entrada);
 };
 
 template<class T>
@@ -45,47 +47,74 @@ inline T* Arbol<T>::buscar(const T& dato)
 template<class T>
 inline stack<T> Arbol<T>::recorrerPreOrden()
 {
-	stack<T> pila;
-	return pila;
+	stack<T> entrada;
+	if (this->raiz != nullptr) {
+		return Arbol<T>::PreOrden(this->raiz, entrada).reverse();
+	}
+	return stack<T>();
 }
 
 template<class T>
 inline stack<T> Arbol<T>::recorrerInOrden()
 {
-	stack<T> retorno;
 	if (this->raiz != nullptr) 
 	{
-		retorno = Arbol<T>::InOrden(this->raiz);
+		stack<T> entrada;
+		return Arbol<T>::InOrden(this->raiz, entrada).reverse();
 	}
 	else {
-		return retorno;
+		return stack<T>();
 	}
-	return retorno;
 	
 }
 
 template<class T>
 inline stack<T> Arbol<T>::recorrerPostOrden()
 {
-	return stack<T>();
+	stack<T> retorno;
+	if (this->raiz != nullptr)
+		return Arbol<T>::PostOrden(this->raiz, retorno).reverse();
+	return retorno;
 }
 
 template<class T>
 inline void Arbol<T>::eliminar()
 {
-
+	
 }
 
 template<class T>
-inline stack<T> Arbol<T>::InOrden(Nodo<T>* nodo)
+inline stack<T> Arbol<T>::InOrden(Nodo<T>* nodo, stack<T> &entrada)
 {
-	stack<T> devolver;
 	if (nodo != nullptr) {
-		devolver = Arbol<T>::InOrden(nodo->getIzq()) + devolver;
-		devolver.push(*nodo->getDato());
-		devolver = Arbol<T>::InOrden(nodo->getDer())+devolver;
+		Arbol<T>::InOrden(nodo->getIzq(), entrada);
+		entrada.push(*nodo->getDato());
+		Arbol<T>::InOrden(nodo->getDer(), entrada);
 	}
-	return devolver;
+	return entrada;
+}
+
+template<class T>
+inline stack<T> Arbol<T>::PreOrden(Nodo<T>* nodo, stack<T>& entrada)
+{
+	if (nodo != nullptr) {
+		entrada .push(*nodo->getDato());
+		Arbol<T>::PreOrden(nodo->getIzq(), entrada);
+		Arbol<T>::PreOrden(nodo->getDer(), entrada);
+	}
+	return entrada;
+}
+
+template<class T>
+inline stack<T> Arbol<T>::PostOrden(Nodo<T>* nodo, stack<T>& entrada)
+{
+	if (nodo != nullptr) {
+		Arbol<T>::PostOrden(nodo->getIzq(), entrada);
+		Arbol<T>::PostOrden(nodo->getDer(), entrada);
+		entrada.push(*nodo->getDato());
+	}
+
+	return entrada;
 }
 
 

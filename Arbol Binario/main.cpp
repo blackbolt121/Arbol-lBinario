@@ -6,24 +6,19 @@
 #include "Nodo.h"
 #include "Arbol.h"
 #include "stack.h"
-
+using std::cout;
+using std::endl;
 int main()
 {
-    Arbol<int> arbol;
-    arbol.insertar(2);
-    arbol.insertar(3);
-    arbol.insertar(1);
-    arbol.insertar(5);
-    arbol.insertar(4);
-    arbol.insertar(8);
-    stack<int> imprimir = arbol.recorrerInOrden();
-    if (imprimir.isEmpty()) {
-        std::cout << "La pila esta vacia";
-    }
-    else {
-        while (!imprimir.isEmpty()) {
-            std::cout << *imprimir.pop()->getItem() << std::endl;
-        }
+    Arbol<std::string> arbol;
+    arbol.insertar("mi");
+    arbol.insertar("primer");
+    arbol.insertar("hola");
+    arbol.insertar("mundo");
+    stack<std::string> a = arbol.recorrerPostOrden();
+    while (!a.isEmpty()) {
+        cout << *a.getPeek()->getItem();
+        a.pop();
     }
 }
 
