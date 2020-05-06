@@ -17,9 +17,10 @@ int main()
     arbol.insertar("mundo");
     stack<std::string> a = arbol.recorrerPostOrden();
     while (!a.isEmpty()) {
-        cout << *a.getPeek()->getItem();
+        cout << *a.getPeek()->getItem() << endl;;
         a.pop();
     }
+    arbol.imprimirArbol();
 }
 
 // Ejecutar programa: Ctrl + F5 o menú Depurar > Iniciar sin depurar
