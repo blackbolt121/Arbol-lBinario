@@ -10,9 +10,9 @@ using std::cout;
 using std::endl;
 int main()
 {
-    Nodo<int> *x = new Nodo<int>(2);
-    Nodo<int> *z = new Nodo<int>(3);
-    
+    Nodo<int>* x = new Nodo<int>(2);
+    Nodo<int>* z = new Nodo<int>(3);
+
     Arbol<char> arbol;
     arbol.insertar('d');
     arbol.insertar('b');
@@ -22,6 +22,13 @@ int main()
     arbol.insertar('f');
     arbol.insertar('e');
     arbol.insertar('g');
+    arbol.imprimirArbol();
+    cout << endl;
+    arbol.eliminar('d');
+    arbol.eliminar('e');
+    arbol.eliminar('c');
+    arbol.eliminar('b');
+    arbol.eliminar('a');
     arbol.imprimirArbol();
 }
 

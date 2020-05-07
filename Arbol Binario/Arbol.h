@@ -37,9 +37,11 @@ inline Arbol<T>::Arbol()
 template<class T>
 inline void Arbol<T>::insertar(const T& dato)
 {
-	if (this->raiz == nullptr)
-		this->raiz = new Nodo<T>();
-	this->raiz->insert(dato);
+	if (this->raiz == nullptr) {
+		this->raiz = new Nodo<T>(dato, nullptr);
+	}
+	else
+		this->raiz->insert(dato);
 }
 
 template<class T>
@@ -111,26 +113,19 @@ inline void Arbol<T>::Eliminar(Nodo<T>*& aux, const T &i)
 					delete aux;
 					aux = aux2;
 				}
-				else {
-					Nodo<T>* iterator;
-					iterator = aux->getDer();
-					while (iterator != nullptr) {
-						if (iterator->getDer() == nullptr and iterator->getIzq() == nullptr) {
-							break;
-						}
-						else {
-							iterator = iterator->getIzq();
-						}
+				else { //Caso 3 Tiene más de dos hijos
+					Nodo<T> *minimo = aux->minimo(aux->getDer());
+					if (minimo->getPadre()->getIzq() == minimo) {
+						minimo->getPadre()->insertIzq(nullptr);
 					}
-					
-					Nodo<T>* anterior = aux->getPadre(iterator);
-					anterior->insertDer(nullptr);
-					Nodo<T>* nuevo_nodo = new Nodo<T>(*iterator->getDato());
-					nuevo_nodo->insertDer(aux->getDer());
-					nuevo_nodo->insertIzq(aux->getIzq());
-					delete aux;
-					aux = nuevo_nodo;
-					
+					else {
+						if(minimo->getPadre()->getDer() == minimo)
+							minimo->getPadre()->insertDer(nullptr);
+					}
+					minimo->setPadre(aux->getPadre());
+					minimo->insertDer(aux->getDer());
+					minimo->insertIzq(aux->getIzq());
+					aux = minimo;
 
 				}
 			}
