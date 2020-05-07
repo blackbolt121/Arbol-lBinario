@@ -10,16 +10,18 @@ using std::cout;
 using std::endl;
 int main()
 {
-    Arbol<std::string> arbol;
-    arbol.insertar("mi");
-    arbol.insertar("primer");
-    arbol.insertar("hola");
-    arbol.insertar("mundo");
-    stack<std::string> a = arbol.recorrerPostOrden();
-    while (!a.isEmpty()) {
-        cout << *a.getPeek()->getItem() << endl;;
-        a.pop();
-    }
+    Nodo<int> *x = new Nodo<int>(2);
+    Nodo<int> *z = new Nodo<int>(3);
+    
+    Arbol<char> arbol;
+    arbol.insertar('d');
+    arbol.insertar('b');
+    arbol.insertar('f');
+    arbol.insertar('a');
+    arbol.insertar('c');
+    arbol.insertar('f');
+    arbol.insertar('e');
+    arbol.insertar('g');
     arbol.imprimirArbol();
 }
 

@@ -10,6 +10,7 @@ private:
 public:
 	Nodo<T>(const T& i);
 	Nodo<T>();
+	~Nodo<T>();
 	T* buscar(const T& i);
 	void insertIzq(Nodo<T>* izq);
 	void insertDer(Nodo<T>* der);
@@ -37,15 +38,20 @@ inline Nodo<T>::Nodo()
 }
 
 template<class T>
+inline Nodo<T>::~Nodo()
+{
+}
+
+template<class T>
 inline void Nodo<T>::insertIzq(Nodo<T>* izq)
 {
-	this->izq = new Nodo<T>(*izq->getDato());
+	this->izq = izq;
 }
 
 template<class T>
 inline void Nodo<T>::insertDer(Nodo<T>* der)
 {
-	this->der = new Nodo<T>(*der->getDato());
+	this->der = der;
 }
 template <class T>
 inline T* Nodo<T>::buscar(const T& i) {
