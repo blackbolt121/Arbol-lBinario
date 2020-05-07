@@ -15,6 +15,7 @@ public:
 	void insertIzq(Nodo<T>* izq);
 	void insertDer(Nodo<T>* der);
 	void insert(const T& dato);
+	Nodo<T>* getPadre(Nodo<T>*& parametro);
 	Nodo<T>*& getIzq();
 	Nodo<T>*& getDer();
 	T* getDato();
@@ -103,7 +104,35 @@ inline void Nodo<T>::insert(const T& dato)
 		this->dato = new T;
 		*this->dato = dato;
 	}
-	
+}
+
+template<class T>
+inline Nodo<T>* Nodo<T>::getPadre(Nodo<T>*& parametro)
+{
+	Nodo<T>* aux = this;
+	if (parametro != nullptr) {
+		if (this->buscar(parametro->getDato() == nullptr)) { //Busca si el dato no existe
+			return nullptr;
+		}
+		if (this->dato == parametro->getDato()) { //En caso de que el nodo sea mismo se retorno el mismo
+			return this;
+		}
+		else {
+			while (aux != parametro) {
+				if (aux->getDer() == parametro or aux->getIzq() == parametro) {
+					break;
+				}
+				else {
+					if (aux->getDato() < parametro->getDato()) {
+						aux = aux->getDer();
+					}else{
+						aux = aux->getIzq();
+					}
+				}
+			}
+			return aux;
+		}
+	}
 }
 
 template<class T>

@@ -90,52 +90,57 @@ inline void Arbol<T>::eliminar(const T& i)
 template<class T>
 inline void Arbol<T>::Eliminar(Nodo<T>*& aux, const T &i)
 {
-	
-	if (aux != nullptr) {
-		Nodo<T>* aux2;
-		if (*aux->getDato() == i) {
-			if (aux->getDer() == nullptr and aux->getIzq() == nullptr) {
-				delete aux;
-				aux = nullptr;
-			}
-			else if (aux->getDer() == nullptr) {
-				aux2 = aux->getIzq();
-				delete aux;
-				aux = aux2;
-			}
-			else if (aux->getIzq() == nullptr) {
-				aux2 = aux->getDer();
-				delete aux;
-				aux = aux2;
-			}
-			else {
-				Nodo<T>* iterator;
-				iterator = aux->getIzq();
-				Nodo<T>* anterior = iterator;
-				while (iterator != nullptr) {
-					if (iterator->getDer() == nullptr and iterator->getIzq() == nullptr) {
-						break;
-					}
-					anterior = iterator;
-					iterator = iterator->getDer();
-				}
-				anterior->insertDer(nullptr);
-				anterior = nullptr;
-				Nodo<T>* nuevo_nodo = new Nodo<T>(*iterator->getDato());
-				nuevo_nodo->insertDer(aux->getDer());
-				nuevo_nodo->insertIzq(aux->getIzq());
-				delete aux;
-				delete iterator;
-				aux = nuevo_nodo;
+	if (aux->buscar(i) == nullptr) {
 
-			}
-		}
-		else {
-			if (*aux->getDato() < i) {
-				Arbol<T>::Eliminar(aux->getDer(), i);
+	}
+	else {
+		if (aux != nullptr) {
+			Nodo<T>* aux2;
+			if (*aux->getDato() == i) {
+				if (aux->getDer() == nullptr and aux->getIzq() == nullptr) {
+					delete aux;
+					aux = nullptr;
+				}
+				else if (aux->getDer() == nullptr) {
+					aux2 = aux->getIzq();
+					delete aux;
+					aux = aux2;
+				}
+				else if (aux->getIzq() == nullptr) {
+					aux2 = aux->getDer();
+					delete aux;
+					aux = aux2;
+				}
+				else {
+					Nodo<T>* iterator;
+					iterator = aux->getDer();
+					while (iterator != nullptr) {
+						if (iterator->getDer() == nullptr and iterator->getIzq() == nullptr) {
+							break;
+						}
+						else {
+							iterator = iterator->getIzq();
+						}
+					}
+					
+					Nodo<T>* anterior = aux->getPadre(iterator);
+					anterior->insertDer(nullptr);
+					Nodo<T>* nuevo_nodo = new Nodo<T>(*iterator->getDato());
+					nuevo_nodo->insertDer(aux->getDer());
+					nuevo_nodo->insertIzq(aux->getIzq());
+					delete aux;
+					aux = nuevo_nodo;
+					
+
+				}
 			}
 			else {
-				Arbol<T>::Eliminar(aux->getIzq(), i);
+				if (*aux->getDato() < i) {
+					Arbol<T>::Eliminar(aux->getDer(), i);
+				}
+				else {
+					Arbol<T>::Eliminar(aux->getIzq(), i);
+				}
 			}
 		}
 	}
