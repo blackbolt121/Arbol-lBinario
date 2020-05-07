@@ -22,6 +22,7 @@ int main()
     arbol.insertar('f');
     arbol.insertar('e');
     arbol.insertar('g');
+    arbol.eliminar('d');
     arbol.imprimirArbol();
 }
 

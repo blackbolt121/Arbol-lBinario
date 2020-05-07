@@ -10,11 +10,12 @@ class Arbol
 public:
 	Arbol();
 	void insertar(const T &dato);
-	Nodo<T>*& buscar(const T& dato);
+	Nodo<T>* buscar(const T& dato);
 	stack<T> recorrerPreOrden();
 	stack<T> recorrerInOrden();
 	stack<T> recorrerPostOrden();
-	static void Eliminar(Nodo<T>* aux, const T& i);
+	void eliminar(const T& i);
+	
 	void imprimirArbol();
 private:
 	Nodo<T>* raiz;
@@ -23,6 +24,7 @@ private:
 	static stack<T> PostOrden(Nodo<T>* nodo, stack<T>& entrada);
 	static Nodo<T>*& Buscar(Nodo<T>*& nodo, const T& dato);
 	static void Imprimir(Nodo<T>* a, int n = 0);
+	static void Eliminar(Nodo<T>*& aux, const T& i);
 	static int tamanyo(Nodo<T>* nodo);
 };
 
@@ -41,7 +43,7 @@ inline void Arbol<T>::insertar(const T& dato)
 }
 
 template<class T>
-inline Nodo<T>*& Arbol<T>::buscar(const T& dato)
+inline Nodo<T>* Arbol<T>::buscar(const T& dato)
 {
 	return Arbol<T>::Buscar(this->raiz, dato);
 }
@@ -80,65 +82,61 @@ inline stack<T> Arbol<T>::recorrerPostOrden()
 }
 
 template<class T>
-inline void Arbol<T>::Eliminar(Nodo<T>* aux, const T &i)
+inline void Arbol<T>::eliminar(const T& i)
 {
-	Nodo<T> *padre = aux;
-	if (padre->getDer() != nullptr) {
-		if (*padre->getDer()->getDato() == i) { //Verifica si el nodo derecho del nodo es igual al dato que se quiere eliminar
-			if (padre->getDer()->getIzq() == nullptr or padre->getDer()->getIzq() == nullptr) { //Verifica si el nodo que buscamos tiene un solo hijo o ninguno
-				if (padre->getDer()->getIzq() == nullptr and padre->getDer()->getIzq() == nullptr) { //Verifica si ambos estan vacios
-					//Caso 1. El nodo que contiene el dato que queremos eliminar no tiene hijos, es decir es una hoja
-					delete padre->getDer();
-					padre->insertDer(nullptr);
-				}
-				else if (padre->getDer()->getIzq() == nullptr) { //Ve si el nodo de la derecha
-					//Caso 2. El nodo que contiene un solo hijo
-					Nodo<T>* aux = padre->getDer()->getDer();
-					delete padre->getDer();
-					padre->insertDer(aux);
-				}
-				else { //En caso de que el nodo izquierdo no sea nulo entonces el derecho lo es
-					//Caso 2. El nodo que contiene un solo hijo
-					Nodo<T>* aux = padre->getDer()->getIzq();
-					delete padre->getDer(); //Elimina el nodo
-					padre->insertDer(aux);
-				}
+	Arbol<T>::Eliminar(this->raiz, i);
+}
+
+template<class T>
+inline void Arbol<T>::Eliminar(Nodo<T>*& aux, const T &i)
+{
+	
+	if (aux != nullptr) {
+		Nodo<T>* aux2;
+		if (*aux->getDato() == i) {
+			if (aux->getDer() == nullptr and aux->getIzq() == nullptr) {
+				delete aux;
+				aux = nullptr;
 			}
-			else { //Caso 3: El arbol tiene dos hijos
-				
+			else if (aux->getDer() == nullptr) {
+				aux2 = aux->getIzq();
+				delete aux;
+				aux = aux2;
 			}
-		}
-		else {//De lo contrario pasa el nodo derecho
-			Arbol<T>::Eliminar(padre->getDer(), i);
-		}
-	}
-	if (padre->getIzq() != nullptr) {
-		if (*padre->getIzq()->getDato() == i) { //Verifica si el nodo izquierdo del nodo es igual al dato que queremos eliminar
-			if (padre->getIzq()->getIzq() == nullptr or padre->getIzq()->getDer() == nullptr) { //Verifica si el nodo que buscamos tiene un solo hijo o ninguno
-				if (padre->getDer()->getIzq() == nullptr and padre->getDer()->getIzq() == nullptr) { //Verifica si ambos estan vacios
-					//Caso 1. El nodo que contiene el dato que queremos eliminar no tiene hijos, es decir es una hoja
-					delete padre->getIzq();
-					padre->insertIzq(nullptr);
-				}
-				else if (padre->getIzq()->getIzq() == nullptr) { //Ve si el nodo de la derecha
-					//Caso 2. El nodo que contiene un solo hijo
-					Nodo<T>* aux = padre->getIzq()->getDer();
-					delete padre->getIzq();
-					padre->insertIzq(aux);
-				}
-				else { //En caso de que el nodo izquierdo no sea nulo entonces el derecho lo es
-					//Caso 2. El nodo que contiene un solo hijo
-					Nodo<T>* aux = padre->getIzq()->getIzq();
-					delete padre->getIzq(); //Elimina el nodo
-					padre->insertIzq(aux);
-				}
+			else if (aux->getIzq() == nullptr) {
+				aux2 = aux->getDer();
+				delete aux;
+				aux = aux2;
 			}
-			else { //Caso 3: El arbol tiene dos hijos
+			else {
+				Nodo<T>* iterator;
+				iterator = aux->getIzq();
+				Nodo<T>* anterior = iterator;
+				while (iterator != nullptr) {
+					if (iterator->getDer() == nullptr and iterator->getIzq() == nullptr) {
+						break;
+					}
+					anterior = iterator;
+					iterator = iterator->getDer();
+				}
+				anterior->insertDer(nullptr);
+				anterior = nullptr;
+				Nodo<T>* nuevo_nodo = new Nodo<T>(*iterator->getDato());
+				nuevo_nodo->insertDer(aux->getDer());
+				nuevo_nodo->insertIzq(aux->getIzq());
+				delete aux;
+				delete iterator;
+				aux = nuevo_nodo;
 
 			}
 		}
 		else {
-			Arbol<T>::Eliminar(padre->getIzq(), i); //De lo contrario pasa el izquierdo
+			if (*aux->getDato() < i) {
+				Arbol<T>::Eliminar(aux->getDer(), i);
+			}
+			else {
+				Arbol<T>::Eliminar(aux->getIzq(), i);
+			}
 		}
 	}
 }
