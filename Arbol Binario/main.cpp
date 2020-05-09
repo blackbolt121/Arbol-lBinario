@@ -23,40 +23,4 @@ int main()
     arbol.insertar('e');
     arbol.insertar('g');
     arbol.imprimirArbol();
-    cout << endl;
-    arbol.eliminar('d');
-    arbol.eliminar('e');
-    arbol.eliminar('c');
-    arbol.eliminar('b');
-    arbol.eliminar('a');
-    arbol.imprimirArbol();
 }
-
-// Ejecutar programa: Ctrl + F5 o menú Depurar > Iniciar sin depurar
-// Depurar programa: F5 o menú Depurar > Iniciar depuración
-
-// Sugerencias para primeros pasos: 1. Use la ventana del Explorador de soluciones para agregar y administrar archivos
-//   2. Use la ventana de Team Explorer para conectar con el control de código fuente
-//   3. Use la ventana de salida para ver la salida de compilación y otros mensajes
-//   4. Use la ventana Lista de errores para ver los errores
-//   5. Vaya a Proyecto > Agregar nuevo elemento para crear nuevos archivos de código, o a Proyecto > Agregar elemento existente para agregar archivos de código existentes al proyecto
-//   6. En el futuro, para volver a abrir este proyecto, vaya a Archivo > Abrir > Proyecto y seleccione el archivo .sln
-
-/*
-Nodo<int> dato = Nodo<int>();
-    dato.insert(2);
-    dato.insert(1);
-    dato.insert(9);
-    int* resultado = dato.buscar(2);
-    if (resultado != nullptr) {
-        std::cout << "El dato se encuentra en el arbol..." << std::endl;
-    }
-    else {
-        std::cout << "El dato no se encuentra en el arbol..." << std::endl;
-    }
-    std::cout << *dato.getDato();
-
-
-
-
-*/

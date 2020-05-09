@@ -24,7 +24,7 @@ private:
 	static stack<T> PostOrden(Nodo<T>* nodo, stack<T>& entrada);
 	static Nodo<T>*& Buscar(Nodo<T>*& nodo, const T& dato);
 	static void Imprimir(Nodo<T>* a, int n = 0);
-	static void Eliminar(Nodo<T>*& aux, const T& i);
+	static void Eliminar(Nodo<T>*& aux, const T& i, bool val);
 	static int tamanyo(Nodo<T>* nodo);
 };
 
@@ -86,11 +86,11 @@ inline stack<T> Arbol<T>::recorrerPostOrden()
 template<class T>
 inline void Arbol<T>::eliminar(const T& i)
 {
-	Arbol<T>::Eliminar(this->raiz, i);
+	Arbol<T>::Eliminar(this->raiz, i, false);
 }
 
 template<class T>
-inline void Arbol<T>::Eliminar(Nodo<T>*& aux, const T &i)
+inline void Arbol<T>::Eliminar(Nodo<T>*& aux, const T& i, bool val)
 {
 	if (aux->buscar(i) == nullptr) {
 
@@ -100,6 +100,14 @@ inline void Arbol<T>::Eliminar(Nodo<T>*& aux, const T &i)
 			Nodo<T>* aux2;
 			if (*aux->getDato() == i) {
 				if (aux->getDer() == nullptr and aux->getIzq() == nullptr) {
+					if (aux->getPadre()->getIzq() == aux) {
+						aux->getPadre()->insertIzq(nullptr);
+					}
+					else {
+						if (aux->getPadre()->getDer() == aux) {
+							aux->getPadre()->insertDer(nullptr);
+						}
+					}
 					delete aux;
 					aux = nullptr;
 				}
@@ -114,28 +122,51 @@ inline void Arbol<T>::Eliminar(Nodo<T>*& aux, const T &i)
 					aux = aux2;
 				}
 				else { //Caso 3 Tiene más de dos hijos
-					Nodo<T> *minimo = aux->minimo(aux->getDer());
-					if (minimo->getPadre()->getIzq() == minimo) {
-						minimo->getPadre()->insertIzq(nullptr);
+					Nodo<T>* minimo;
+						if (val == true)
+							minimo = aux->minimo(aux->getIzq(), val);
+						else
+							minimo = aux->minimo(aux->getDer(), val);
+					if (minimo != nullptr) {
+						if (minimo->getPadre() != nullptr) {
+							if (minimo->getPadre()->getIzq() == minimo)
+								minimo->getPadre()->insertIzq(nullptr);
+							else {
+								if (minimo->getPadre()->getDer() == minimo)
+									minimo->getPadre()->insertDer(nullptr);
+							}
+						}
+						aux2 = new Nodo<T>(*minimo->getDato(), aux->getPadre());
+						aux2->insertDer(aux->getDer(), aux2);
+						aux2->insertIzq(aux->getIzq(), aux2);
+						aux = aux2;
 					}
-					else {
-						if(minimo->getPadre()->getDer() == minimo)
-							minimo->getPadre()->insertDer(nullptr);
-					}
-					minimo->setPadre(aux->getPadre());
-					minimo->insertDer(aux->getDer());
-					minimo->insertIzq(aux->getIzq());
-					aux = minimo;
-
 				}
 			}
 			else {
-				if (*aux->getDato() < i) {
-					Arbol<T>::Eliminar(aux->getDer(), i);
+				if (aux->getPadre() == nullptr) {
+					if (*aux->getDato() < i) {
+						if (aux->getDer() != nullptr)
+							Arbol<T>::Eliminar(aux->getDer(), i, false);
+						else
+							if (aux->getIzq() != nullptr)
+								Arbol<T>::Eliminar(aux->getIzq(), i, true);
+					}
+					else
+					{
+						if(aux->getIzq() != nullptr)
+							Arbol<T>::Eliminar(aux->getIzq(), i, true);
+						else
+							Arbol<T>::Eliminar(aux->getDer(), i, false);
+					}
 				}
 				else {
-					Arbol<T>::Eliminar(aux->getIzq(), i);
+					if (*aux->getDato() < i)
+						Arbol<T>::Eliminar(aux->getDer(), i, val);
+					else
+						Arbol<T>::Eliminar(aux->getIzq(), i, val);
 				}
+
 			}
 		}
 	}

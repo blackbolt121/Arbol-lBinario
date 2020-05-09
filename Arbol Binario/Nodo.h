@@ -13,14 +13,16 @@ public:
 	Nodo<T>(Nodo<T>* padre = nullptr);
 	~Nodo<T>();
 	T* buscar(const T& i);
+	void setDato(const T& i);
 	void insertIzq(Nodo<T>* izq, Nodo<T>* padre = nullptr);
 	void insertDer(Nodo<T>* der, Nodo<T>* padre = nullptr);
 	void insert(const T& dato, Nodo<T>* padre = nullptr);
 	void setPadre(Nodo<T>* padre = nullptr);
+	bool isHoja();
 	Nodo<T>* getPadre();
 	Nodo<T>*& getIzq();
 	Nodo<T>*& getDer();
-	Nodo<T>* minimo(Nodo<T>* n);
+	Nodo<T>* minimo(Nodo<T>* n, bool val);
 	T* getDato();
 };
 
@@ -52,7 +54,7 @@ template<class T>
 inline void Nodo<T>::insertIzq(Nodo<T>* izq, Nodo<T>* padre)
 {
 	this->izq = izq;
-	if (padre != nullptr) {
+	if (padre != nullptr and this->izq != nullptr) {
 		this->izq->setPadre(padre);
 	}
 }
@@ -61,7 +63,7 @@ template<class T>
 inline void Nodo<T>::insertDer(Nodo<T>* der, Nodo<T>* padre)
 {
 	this->der = der;
-	if (padre != nullptr) {
+	if (padre != nullptr and this->der != nullptr) {
 		this->der->setPadre(padre);
 	}
 }
@@ -86,6 +88,12 @@ inline T* Nodo<T>::buscar(const T& i) {
 		}
 	}
 	return nullptr;
+}
+template<class T>
+inline void Nodo<T>::setDato(const T& i)
+{
+	if(this->dato != nullptr)
+		*this->dato = i;
 }
 template<class T>
 inline void Nodo<T>::insert(const T& dato, Nodo<T>* padre)
@@ -124,6 +132,12 @@ inline void Nodo<T>::setPadre(Nodo<T>* padre)
 }
 
 template<class T>
+inline bool Nodo<T>::isHoja()
+{
+	return (this->der == nullptr and this->izq == nullptr)? true : false;
+}
+
+template<class T>
 inline Nodo<T>* Nodo<T>::getPadre()
 {
 	return this->padre;
@@ -143,25 +157,24 @@ inline Nodo<T>*& Nodo<T>::getDer()
 }
 
 template<class T>
-inline Nodo<T>* Nodo<T>::minimo(Nodo<T>* n)
+inline Nodo<T>* Nodo<T>::minimo(Nodo<T>* n, bool val)
 {
-	Nodo<T> *retorno = n;
-	if (n == nullptr) {
-		retorno = nullptr;
-	}
-	else
-	{
-		if (retorno->getDer() == nullptr and retorno->getIzq() == nullptr) {
-			return retorno;
-		}
-		else if (retorno->getIzq() != nullptr) {
-			retorno = retorno->getIzq();
-			retorno = this->minimo(retorno);
-		}
-		else {
-			if (retorno->getDer() != nullptr) {
-				retorno = retorno->getDer();
-				retorno = this->minimo(retorno);
+	Nodo<T>* retorno=nullptr;
+	if (n != nullptr) {
+		if (n->isHoja() == true)
+			return n;
+		{
+			if (val == true) {
+				retorno = n->getDer();
+				if (retorno == nullptr)
+					retorno = n->getIzq();
+				retorno = this->minimo(retorno, val);
+			}
+			else {
+				retorno = n->getIzq();
+				if(retorno == nullptr)
+					retorno = n->getDer();
+				retorno = this->minimo(retorno, val);
 			}
 		}
 	}
