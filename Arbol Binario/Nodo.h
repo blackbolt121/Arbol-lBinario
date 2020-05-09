@@ -1,6 +1,5 @@
 #pragma once
 #include <iostream>
-#include <algorithm>
 template <class T>
 class Nodo {
 private:

@@ -1,9 +1,7 @@
 #pragma once
 #include <iostream>
-#include <iomanip>
 #include "Nodo.h"
 #include "stack.h"
-#include <queue>
 template <class T>
 class Arbol
 {
@@ -15,14 +13,14 @@ public:
 	stack<T> recorrerInOrden();
 	stack<T> recorrerPostOrden();
 	void eliminar(const T& i);
-	
+	int size();
 	void imprimirArbol();
 private:
 	Nodo<T>* raiz;
 	static stack<T> InOrden(Nodo<T> *nodo, stack<T>& entrada);
 	static stack<T> PreOrden(Nodo<T>* nodo, stack<T>& entrada);
 	static stack<T> PostOrden(Nodo<T>* nodo, stack<T>& entrada);
-	static Nodo<T>*& Buscar(Nodo<T>*& nodo, const T& dato);
+	static Nodo<T>* Buscar(Nodo<T>*& nodo, const T& dato);
 	static void Imprimir(Nodo<T>* a, int n = 0);
 	static void Eliminar(Nodo<T>*& aux, const T& i, bool val);
 	static int tamanyo(Nodo<T>* nodo);
@@ -86,16 +84,20 @@ inline stack<T> Arbol<T>::recorrerPostOrden()
 template<class T>
 inline void Arbol<T>::eliminar(const T& i)
 {
-	Arbol<T>::Eliminar(this->raiz, i, false);
+	if(this->raiz->buscar(i)!= nullptr)
+		Arbol<T>::Eliminar(this->raiz, i, false);
+}
+
+template<class T>
+inline int Arbol<T>::size()
+{
+	return Arbol<T>::tamanyo(this->raiz);
 }
 
 template<class T>
 inline void Arbol<T>::Eliminar(Nodo<T>*& aux, const T& i, bool val)
 {
-	if (aux->buscar(i) == nullptr) {
-
-	}
-	else {
+	if(aux!=nullptr){
 		if (aux != nullptr) {
 			Nodo<T>* aux2;
 			if (*aux->getDato() == i) {
@@ -207,22 +209,22 @@ inline stack<T> Arbol<T>::PostOrden(Nodo<T>* nodo, stack<T>& entrada)
 }
 
 template<class T>
-inline Nodo<T>*& Arbol<T>::Buscar(Nodo<T>*& nodo, const T& dato)
+inline Nodo<T>* Arbol<T>::Buscar(Nodo<T>*& nodo, const T& dato)
 {
-	Nodo<T>* aux;
+	Nodo<T>* aux = nodo;
 	if (nodo == nullptr) {
-
+		return aux;
 	}
 	else {
 		if (*nodo->getDato() == dato) {
-			aux = nodo;
+			return nodo;
 		}
 		else {
 			if (*nodo->getDato() < dato) {
-				aux = Arbol<T>::Buscar(nodo->getIzq(), dato);
+				aux = Arbol<T>::Buscar(nodo->getDer(), dato);
 			}
 			else {
-				aux = Arbol<T>::Buscar(nodo->getDer(), dato);
+				aux = Arbol<T>::Buscar(nodo->getIzq(), dato);
 			}
 		}
 	}
